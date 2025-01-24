@@ -6,8 +6,13 @@ workflows:
       vars:
         NODE_VERSION: 16.13.0
         FIREBASE_APP_ID: 1:842998708167:web:b9b1a38ee400975807cbe2
-        FIREBASE_PROJECT_ID: project-6349879156933445469
     scripts:
+      - name: Install Firebase CLI
+        script: |
+          curl -sL https://firebase.tools | bash
+      - name: Save Firebase Credentials
+        script: |
+          echo "$FIREBASE_AUTH_CREDENTIALS" > firebase_credentials.json
       - name: Install dependencies
         script: |
           npm install
@@ -16,11 +21,10 @@ workflows:
           npm run build
       - name: Upload to Firebase App Distribution
         script: |
-          firebase appdistribution:distribute ./build/your-app-file.apk \
+          firebase appdistribution:distribute ./build/app-release.apk \
           --app $FIREBASE_APP_ID \
-          --project $FIREBASE_PROJECT_ID \
           --testers cyl233master@gmail.com \
-          --token $FIREBASE_AUTH_TOKEN
+          --token $(cat firebase_credentials.json | jq -r .private_key)
     artifacts:
       - build/**/*
 
