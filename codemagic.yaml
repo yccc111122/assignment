@@ -3,12 +3,12 @@ workflows:
     name: Build and Notify via Email
     environment:
       vars:
-        EMAIL_RECIPIENTS: "cyl233master@gmail.com"
+        EMAIL_RECIPIENTS: "cyl233master@gmail.com"  # 测试人员邮箱
     scripts:
       - name: Install mailutils
         script: |
-          sudo apt-get update
-          sudo apt-get install -y mailutils
+          brew update
+          brew install mailutils
       - name: Install dependencies
         script: |
           npm install
@@ -24,6 +24,7 @@ workflows:
           fi
     artifacts:
       - build/**/*
+
 
 
 
