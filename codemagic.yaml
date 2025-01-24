@@ -4,7 +4,7 @@ workflows:
     max_build_duration: 30
     environment:
       groups:
-        - firebase-auth # 引用您在 Codemagic 中配置的环境变量组
+        - firebase-auth # 使用环境变量组
       vars:
         NODE_VERSION: 16.13.0
         GOOGLE_APPLICATION_CREDENTIALS: $CM_BUILD_DIR/firebase_credentials.json
@@ -25,8 +25,8 @@ workflows:
         script: |
           firebase appdistribution:distribute ./build/app-release.apk \
           --app $FIREBASE_APP_ID \
-          --groups beta-testers \
-          --service-account-file $GOOGLE_APPLICATION_CREDENTIALS
+          --groups beta-testers
     artifacts:
       - build/**/*
+
 
