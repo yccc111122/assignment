@@ -5,9 +5,9 @@ workflows:
     environment:
       vars:
         NODE_VERSION: 16.13.0
-        GOOGLE_APPLICATION_CREDENTIALS: $FIREBASE_AUTH_CREDENTIALS
+        GOOGLE_APPLICATION_CREDENTIALS: $FIREBASE_AUTH_CREDENTIALS # 引入服务账号凭据变量
       groups:
-        - firebase-auth
+        - firebase-auth # 引入环境变量组
     scripts:
       - name: Install dependencies
         script: |
@@ -17,8 +17,11 @@ workflows:
           npm run build
       - name: Upload to Firebase App Distribution
         script: |
-          firebase appdistribution:distribute ./build/app-release.apk --app 1:842998708167:web:b9b1a38ee400975807cbe2
+          echo $GOOGLE_APPLICATION_CREDENTIALS | base64 --decode > firebase-credentials.json
+          firebase appdistribution:distribute ./build/app-release.apk \
+            --app 1:842998708167:web:b9b1a38ee400975807cbe2
     artifacts:
       - build/**/*
+
 
 
