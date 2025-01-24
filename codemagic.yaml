@@ -1,10 +1,9 @@
 workflows:
   fullstack-app:
-    name: Build and Deploy Fullstack App
-    max_build_duration: 30
+    name: Build and Notify via Email
     environment:
       vars:
-        FIREBASE_AUTH_CREDENTIALS: $FIREBASE_AUTH_CREDENTIALS
+        EMAIL_RECIPIENTS: "testers@example.com"  # 测试人员的邮箱列表，多个邮箱用逗号分隔
     scripts:
       - name: Install dependencies
         script: |
@@ -12,22 +11,16 @@ workflows:
       - name: Build the app
         script: |
           npm run build
-      - name: Upload to Firebase App Distribution
+      - name: Notify testers via email
         script: |
-          echo "$FIREBASE_AUTH_CREDENTIALS" | base64 --decode > /tmp/firebase-credentials.json
-          export GOOGLE_APPLICATION_CREDENTIALS=/tmp/firebase-credentials.json
-          firebase appdistribution:distribute ./build/app-release.apk \
-            --app 1:842998708167:web:b9b1a38ee400975807cbe2 \
-            --groups testers@example.com
+          if [ -d ./build ]; then
+            echo "Build successful! The latest build is ready for testing. Download it from Codemagic." | mail -s "Build Successful" $EMAIL_RECIPIENTS
+          else
+            echo "Build failed! Please check the logs for more details." | mail -s "Build Failed" $EMAIL_RECIPIENTS
+          fi
     artifacts:
-      - build/**/*
+      - build/**/*  # 构建生成的文件
 
-groups:
-  default:
-    environment:
-      vars:
-        FIREBASE_AUTH_CREDENTIALS:
-          secure: "你的 Base64 编码凭据"
 
 
 
