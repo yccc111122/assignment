@@ -4,21 +4,22 @@ workflows:
     max_build_duration: 30
     environment:
       groups:
-        - firebase-auth # 引入您的 Firebase 环境变量组
+        - firebase-auth # 引入 Firebase 环境变量组
       vars:
         NODE_VERSION: 16.13.0
+        GOOGLE_APPLICATION_CREDENTIALS: $FIREBASE_AUTH_CREDENTIALS # 服务账号密钥文件路径
     scripts:
       - name: Install dependencies
         script: |
           npm install
       - name: Build the app
         script: |
-          npm run build
+          npm run build # 确保生成的文件路径正确
       - name: Upload to Firebase App Distribution
         script: |
           firebase appdistribution:distribute ./build/app-release.apk \
-            --app 1:842998708167:web:b9b1a38ee400975807cbe2 \
-            --token $FIREBASE_AUTH_TOKEN
+            --app 1:842998708167:web:b9b1a38ee400975807cbe2
     artifacts:
       - build/**/*
+
 
