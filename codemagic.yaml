@@ -8,7 +8,7 @@ workflows:
       vars:
         NODE_VERSION: 16.13.0
         GOOGLE_APPLICATION_CREDENTIALS: $CM_BUILD_DIR/firebase_credentials.json
-        FIREBASE_APP_ID: your-firebase-app-id # 替换为您的 Firebase App ID
+        FIREBASE_APP_ID: 1:842998708167:web:b9b1a38ee400975807cbe2
     scripts:
       - name: Install Firebase CLI
         script: |
@@ -29,3 +29,4 @@ workflows:
           --groups beta-testers
     artifacts:
       - build/**/*
+
