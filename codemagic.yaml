@@ -1,10 +1,12 @@
 workflows:
   fullstack-app:
-    name: Build and Deploy Fullstack App
+    name: Build, Test, and Distribute Fullstack App
     max_build_duration: 30
     environment:
       vars:
         NODE_VERSION: 16.13.0
+        FIREBASE_APP_ID: 1:842998708167:web:b9b1a38ee400975807cbe2
+        FIREBASE_PROJECT_ID: project-6349879156933445469
     scripts:
       - name: Install dependencies
         script: |
@@ -12,5 +14,13 @@ workflows:
       - name: Build the app
         script: |
           npm run build
+      - name: Upload to Firebase App Distribution
+        script: |
+          firebase appdistribution:distribute ./build/your-app-file.apk \
+          --app $FIREBASE_APP_ID \
+          --project $FIREBASE_PROJECT_ID \
+          --testers cyl233master@gmail.com \
+          --token $FIREBASE_AUTH_TOKEN
     artifacts:
       - build/**/*
+
