@@ -1,27 +1,19 @@
-workflows:
-  fullstack-app:
-    name: Build and Notify via Gmail
-    environment:
-      vars:
-        EMAIL_RECIPIENTS: "gs70696@student.upm.edu.my"
-        SMTP_SERVER: "smtp.gmail.com"
-        SMTP_PORT: "587"
-        SMTP_USER: "cyl233master@gmail.com"
-        SMTP_PASSWORD: "cyl1998316"  # 需要生成 Gmail 应用密码
-    scripts:
-      - name: Install dependencies
-        script: |
-          npm install
-      - name: Build the app
-        script: |
-          npm run build
-      - name: Send email notification via Gmail
-        script: |
-          echo -e "Subject: Build Successful\n\nThe latest build is ready for testing." | \
-          curl --url "smtp://$SMTP_SERVER:$SMTP_PORT" --ssl-reqd \
-               --mail-from "$SMTP_USER" --mail-rcpt "$EMAIL_RECIPIENTS" \
-               --user "$SMTP_USER:$SMTP_PASSWORD" \
-               --upload-file -
+- name: Send email notification via SendGrid
+  script: |
+    curl --request POST \
+    --url https://api.sendgrid.com/v3/mail/send \
+    --header "Authorization: Bearer YOUR_SENDGRID_API_KEY" \
+    --header "Content-Type: application/json" \
+    --data '{
+      "personalizations": [
+        {
+          "to": [{"email": "cyl233master@gmail.com"}],
+          "subject": "Build Successful"
+        }
+      ],
+      "from": {"email": "your-email@example.com"},
+      "content": [{"type": "text/plain", "value": "The latest build is ready for testing."}]
+    }'
 
 
 
