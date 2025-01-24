@@ -4,7 +4,6 @@ workflows:
     max_build_duration: 30
     environment:
       vars:
-        NODE_VERSION: 16.13.0
         FIREBASE_AUTH_CREDENTIALS: $FIREBASE_AUTH_CREDENTIALS
     scripts:
       - name: Install dependencies
@@ -28,7 +27,7 @@ groups:
     environment:
       vars:
         FIREBASE_AUTH_CREDENTIALS:
-          secure: "BASE64_ENCODED_CREDENTIALS_HERE"
+          secure: "你的 Base64 编码凭据"
 
 
 
