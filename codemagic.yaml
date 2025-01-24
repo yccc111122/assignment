@@ -1,19 +1,20 @@
 workflows:
   fullstack-app:
-    name: Build, Test, and Distribute Fullstack App
+    name: Build and Deploy Fullstack App
     max_build_duration: 30
     environment:
+      groups:
+        - firebase-auth # 引用您在 Codemagic 中配置的环境变量组
       vars:
         NODE_VERSION: 16.13.0
-        FIREBASE_APP_ID: 1:842998708167:web:b9b1a38ee400975807cbe2
         GOOGLE_APPLICATION_CREDENTIALS: $CM_BUILD_DIR/firebase_credentials.json
     scripts:
       - name: Install Firebase CLI
         script: |
           curl -sL https://firebase.tools | bash
-      - name: Save Firebase Credentials
+      - name: Decode and Save Firebase Credentials
         script: |
-          echo "$FIREBASE_AUTH_CREDENTIALS" > $GOOGLE_APPLICATION_CREDENTIALS
+          echo "$FIREBASE_AUTH_CREDENTIALS" | base64 --decode > $GOOGLE_APPLICATION_CREDENTIALS
       - name: Install dependencies
         script: |
           npm install
@@ -24,7 +25,8 @@ workflows:
         script: |
           firebase appdistribution:distribute ./build/app-release.apk \
           --app $FIREBASE_APP_ID \
-          --testers cyl233master@gmail.com
+          --groups beta-testers \
+          --service-account-file $GOOGLE_APPLICATION_CREDENTIALS
     artifacts:
       - build/**/*
 
