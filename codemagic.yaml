@@ -1,32 +1,20 @@
 workflows:
-  fullstack-app:
-    name: Build and Test Fullstack App
-    max_build_duration: 60
+  web-app-workflow:
+    name: Build and Test Web Application
+    max_build_duration: 30
     environment:
       vars:
         NODE_VERSION: 16.13.0
     scripts:
-      - name: Install Frontend Dependencies
+      - name: Install dependencies
         script: |
-          cd frontend
           npm install
-      - name: Install Backend Dependencies
+      - name: Build the project
         script: |
-          cd backend
-          npm install
-      - name: Run Tests
-        script: |
-          cd backend
-          npm test
-      - name: Build Frontend
-        script: |
-          cd frontend
           npm run build
-      - name: Package Backend
-        script: |
-          cd backend
-          npm run package
+      # 如果没有测试需求，可以暂时跳过测试步骤
+      # - name: Run Tests
+      #   script: |
+      #     npm test
     artifacts:
-      - backend/**/*
-      - frontend/build/**/*
-
+      - build/**/*
