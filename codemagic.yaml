@@ -15,8 +15,9 @@ workflows:
           npm run build
       - name: Upload to Firebase App Distribution
         script: |
-          firebase appdistribution:distribute ./build/app-release.apk --app <your-firebase-app-id>
+          firebase appdistribution:distribute ./build/app-release.apk --app 1:842998708167:web:b9b1a38ee400975807cbe2 --token $FIREBASE_AUTH_TOKEN
     artifacts:
       - build/**/*
+
 
 
