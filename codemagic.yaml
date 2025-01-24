@@ -6,6 +6,8 @@ workflows:
       vars:
         NODE_VERSION: 16.13.0
         GOOGLE_APPLICATION_CREDENTIALS: $FIREBASE_AUTH_CREDENTIALS
+      groups:
+        - firebase-auth
     scripts:
       - name: Install dependencies
         script: |
