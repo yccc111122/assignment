@@ -1,0 +1,32 @@
+workflows:
+  fullstack-app:
+    name: Build and Test Fullstack App
+    max_build_duration: 60
+    environment:
+      vars:
+        NODE_VERSION: 16.13.0
+    scripts:
+      - name: Install Frontend Dependencies
+        script: |
+          cd frontend
+          npm install
+      - name: Install Backend Dependencies
+        script: |
+          cd backend
+          npm install
+      - name: Run Tests
+        script: |
+          cd backend
+          npm test
+      - name: Build Frontend
+        script: |
+          cd frontend
+          npm run build
+      - name: Package Backend
+        script: |
+          cd backend
+          npm run package
+    artifacts:
+      - backend/**/*
+      - frontend/build/**/*
+
