@@ -1,24 +1,35 @@
 workflows:
   fullstack-app:
     name: Build and Deploy Fullstack App
+    max_build_duration: 30
     environment:
       vars:
         NODE_VERSION: 16.13.0
+        FIREBASE_AUTH_CREDENTIALS: $FIREBASE_AUTH_CREDENTIALS
     scripts:
       - name: Install dependencies
         script: |
           npm install
       - name: Build the app
         script: |
-          ./gradlew assembleRelease
+          npm run build
       - name: Upload to Firebase App Distribution
         script: |
           echo "$FIREBASE_AUTH_CREDENTIALS" | base64 --decode > /tmp/firebase-credentials.json
           export GOOGLE_APPLICATION_CREDENTIALS=/tmp/firebase-credentials.json
-          firebase appdistribution:distribute ./app/build/outputs/apk/release/app-release.apk \
-            --app 1:842998708167:web:b9b1a38ee400975807cbe2
+          firebase appdistribution:distribute ./build/app-release.apk \
+            --app 1:842998708167:web:b9b1a38ee400975807cbe2 \
+            --groups testers@example.com
     artifacts:
-      - app/build/outputs/apk/release/app-release.apk
+      - build/**/*
+
+groups:
+  default:
+    environment:
+      vars:
+        FIREBASE_AUTH_CREDENTIALS:
+          secure: "BASE64_ENCODED_CREDENTIALS_HERE"
+
 
 
 
