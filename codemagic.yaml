@@ -3,7 +3,7 @@ workflows:
     name: Build and Notify via Email
     environment:
       vars:
-        EMAIL_RECIPIENTS: "testers@example.com"  # 测试人员的邮箱列表，多个邮箱用逗号分隔
+        EMAIL_RECIPIENTS: "cyl233master@gmail.com"  # 测试人员的邮箱列表，多个邮箱用逗号分隔
     scripts:
       - name: Install dependencies
         script: |
