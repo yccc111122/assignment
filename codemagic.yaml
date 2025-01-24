@@ -3,22 +3,19 @@ workflows:
     name: Build and Deploy Fullstack App
     max_build_duration: 30
     environment:
-      groups:
-        - firebase-auth # 引入 Firebase 环境变量组
       vars:
         NODE_VERSION: 16.13.0
-        GOOGLE_APPLICATION_CREDENTIALS: $FIREBASE_AUTH_CREDENTIALS # 服务账号密钥文件路径
+        GOOGLE_APPLICATION_CREDENTIALS: $FIREBASE_AUTH_CREDENTIALS
     scripts:
       - name: Install dependencies
         script: |
           npm install
       - name: Build the app
         script: |
-          npm run build # 确保生成的文件路径正确
+          npm run build
       - name: Upload to Firebase App Distribution
         script: |
-          firebase appdistribution:distribute ./build/app-release.apk \
-            --app 1:842998708167:web:b9b1a38ee400975807cbe2
+          firebase appdistribution:distribute ./build/app-release.apk --app <your-firebase-app-id>
     artifacts:
       - build/**/*
 
