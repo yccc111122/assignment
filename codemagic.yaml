@@ -24,7 +24,7 @@ workflows:
           firebase appdistribution:distribute ./build/app-release.apk \
           --app $FIREBASE_APP_ID \
           --testers cyl233master@gmail.com \
-          --token $(cat firebase_credentials.json | jq -r .private_key)
+          --service-account-file firebase_credentials.json
     artifacts:
       - build/**/*
 
