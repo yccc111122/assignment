@@ -4,10 +4,11 @@ workflows:
     max_build_duration: 30
     environment:
       groups:
-        - firebase-auth # 使用环境变量组
+        - firebase-auth
       vars:
         NODE_VERSION: 16.13.0
         GOOGLE_APPLICATION_CREDENTIALS: $CM_BUILD_DIR/firebase_credentials.json
+        FIREBASE_APP_ID: your-firebase-app-id # 替换为您的 Firebase App ID
     scripts:
       - name: Install Firebase CLI
         script: |
@@ -28,5 +29,3 @@ workflows:
           --groups beta-testers
     artifacts:
       - build/**/*
-
-
