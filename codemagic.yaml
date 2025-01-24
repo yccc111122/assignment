@@ -3,8 +3,12 @@ workflows:
     name: Build and Notify via Email
     environment:
       vars:
-        EMAIL_RECIPIENTS: "cyl233master@gmail.com"  # 测试人员的邮箱列表，多个邮箱用逗号分隔
+        EMAIL_RECIPIENTS: "cyl233master@gmail.com"
     scripts:
+      - name: Install mailutils
+        script: |
+          sudo apt-get update
+          sudo apt-get install -y mailutils
       - name: Install dependencies
         script: |
           npm install
@@ -19,7 +23,7 @@ workflows:
             echo "Build failed! Please check the logs for more details." | mail -s "Build Failed" $EMAIL_RECIPIENTS
           fi
     artifacts:
-      - build/**/*  # 构建生成的文件
+      - build/**/*
 
 
 
