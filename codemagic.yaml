@@ -14,7 +14,7 @@ workflows:
       - name: Build the web app
         script: |
           npm run build
-      - name: Verify build output
+      - name: Verify Webpack output
         script: |
           ls -lh build
       - name: Decode Firebase Credentials
@@ -25,6 +25,7 @@ workflows:
           firebase deploy --only hosting --project $FIREBASE_PROJECT_ID --token $FIREBASE_AUTH_TOKEN
     artifacts:
       - build/**/*
+
 
 
 
