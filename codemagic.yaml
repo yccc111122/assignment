@@ -1,12 +1,12 @@
 workflows:
   fullstack-app:
-    name: Build and Deploy to Firebase Hosting
+    name: Build and Deploy to Firebase
     environment:
       groups:
-        - firebase-auth  # 确保 Codemagic 变量组里包含 FIREBASE_AUTH_CREDENTIALS
+        - firebase-auth
       vars:
-        GOOGLE_APPLICATION_CREDENTIALS: $CM_BUILD_DIR/service-account.json  # 设置 Firebase 认证文件路径
-        FIREBASE_PROJECT_ID: "project-6349879156933445469"  # 你的 Firebase 项目 ID
+        GOOGLE_APPLICATION_CREDENTIALS: $CM_BUILD_DIR/service-account.json
+        FIREBASE_PROJECT_ID: "project-6349879156933445469"
     scripts:
       - name: Install dependencies
         script: |
@@ -22,6 +22,7 @@ workflows:
           firebase deploy --only hosting --project $FIREBASE_PROJECT_ID --token $FIREBASE_AUTH_TOKEN
     artifacts:
       - build/**/*
+
 
 
 
