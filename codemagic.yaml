@@ -3,7 +3,7 @@ workflows:
     name: Build and Deploy Web App to Firebase Hosting
     environment:
       vars:
-        NODE_VERSION: 16  # 使用 Codemagic 提供的 Node.js 环境支持
+        NODE_VERSION: 16  # 指定 Node.js 版本
         GOOGLE_APPLICATION_CREDENTIALS: $CM_BUILD_DIR/service-account.json
         FIREBASE_PROJECT_ID: "project-6349879156933445469"
     scripts:
