@@ -1,6 +1,6 @@
 workflows:
   web-app:
-    name: Build and Deploy Web App to Firebase Hosting
+    name: Deploy Web App to Firebase Hosting Ready to Test
     environment:
       groups:
         - firebase-auth  
