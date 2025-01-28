@@ -1,13 +1,9 @@
 workflows:
   fullstack-app:
-    name: Build and Notify via Gmail
+    name: Build and Deploy to Firebase
     environment:
-      vars:
-        EMAIL_RECIPIENTS: "cyl233master@gmail.com"
-        SMTP_SERVER: "smtp.gmail.com"
-        SMTP_PORT: "587"
-        SMTP_USER: "your-email@gmail.com"
-        SMTP_PASSWORD: "your-app-password"  # 需要生成 Gmail 应用密码
+      groups:
+        - firebase-auth  # 这里引用 Codemagic 中的变量组
     scripts:
       - name: Install dependencies
         script: |
@@ -15,13 +11,17 @@ workflows:
       - name: Build the app
         script: |
           npm run build
-      - name: Send email notification via Gmail
+      - name: Decode Firebase Credentials
         script: |
-          echo -e "Subject: Build Successful\n\nThe latest build is ready for testing." | \
-          curl --url "smtp://$SMTP_SERVER:$SMTP_PORT" --ssl-reqd \
-               --mail-from "$SMTP_USER" --mail-rcpt "$EMAIL_RECIPIENTS" \
-               --user "$SMTP_USER:$SMTP_PASSWORD" \
-               --upload-file -
+          echo $FIREBASE_AUTH_CREDENTIALS | base64 --decode > service-account.json
+      - name: Upload to Firebase App Distribution
+        script: |
+          firebase appdistribution:distribute ./build/app-release.apk \
+            --app 1:842998708167:web:b9b1a38ee400975807cbe2 \
+            --release-notes "New Build Available" \
+            --service-account-file service-account.json
+    artifacts:
+      - build/**/*
 
 
 
