@@ -1,17 +1,18 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin'); // 修正 CleanWebpackPlugin 导入
 
-const outputDirectory = 'dist';
+const outputDirectory = 'build'; // 将输出目录改为 build 以兼容 Firebase Hosting
 
 module.exports = {
-  entry: ['babel-polyfill', './src/client/index.js'],
+  entry: ['babel-polyfill', './src/client/index.js'], // 入口文件
   output: {
-    path: path.join(__dirname, outputDirectory),
+    path: path.join(__dirname, outputDirectory), // 输出路径设置为 build
     filename: 'bundle.js'
   },
   module: {
-    rules: [{
+    rules: [
+      {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         use: {
@@ -24,7 +25,10 @@ module.exports = {
       },
       {
         test: /\.(png|woff|woff2|eot|ttf|svg)$/,
-        loader: 'url-loader?limit=100000'
+        loader: 'url-loader',
+        options: {
+          limit: 100000
+        }
       }
     ]
   },
@@ -40,7 +44,7 @@ module.exports = {
     }
   },
   plugins: [
-    new CleanWebpackPlugin([outputDirectory]),
+    new CleanWebpackPlugin(), // 清理输出目录
     new HtmlWebpackPlugin({
       template: './public/index.html',
       favicon: './public/favicon.ico'
