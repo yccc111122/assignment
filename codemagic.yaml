@@ -3,7 +3,9 @@ workflows:
     name: Build and Deploy to Firebase
     environment:
       groups:
-        - firebase-auth  # 这里引用 Codemagic 中的变量组
+        - firebase-auth  # 这里引用 Codemagic 里的变量组
+      vars:
+        GOOGLE_APPLICATION_CREDENTIALS: $CM_BUILD_DIR/service-account.json  # 设置 Firebase 认证文件路径
     scripts:
       - name: Install dependencies
         script: |
@@ -13,13 +15,12 @@ workflows:
           npm run build
       - name: Decode Firebase Credentials
         script: |
-          echo $FIREBASE_AUTH_CREDENTIALS | base64 --decode > service-account.json
+          echo $FIREBASE_AUTH_CREDENTIALS | base64 --decode > $CM_BUILD_DIR/service-account.json
       - name: Upload to Firebase App Distribution
         script: |
           firebase appdistribution:distribute ./build/app-release.apk \
             --app 1:842998708167:web:b9b1a38ee400975807cbe2 \
-            --release-notes "New Build Available" \
-            --service-account-file service-account.json
+            --release-notes "New Build Available"
     artifacts:
       - build/**/*
 
