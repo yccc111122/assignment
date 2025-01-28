@@ -2,8 +2,9 @@ workflows:
   web-app:
     name: Build and Deploy Web App to Firebase Hosting
     environment:
+      groups:
+        - firebase-auth  # 确保这个组中包含 FIREBASE_AUTH_CREDENTIALS
       vars:
-        NODE_VERSION: 16  # 指定 Node.js 版本
         GOOGLE_APPLICATION_CREDENTIALS: $CM_BUILD_DIR/service-account.json
         FIREBASE_PROJECT_ID: "project-6349879156933445469"
     scripts:
