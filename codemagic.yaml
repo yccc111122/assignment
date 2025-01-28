@@ -1,6 +1,6 @@
 workflows:
-  fullstack-app:
-    name: Build and Deploy to Firebase
+  web-app:
+    name: Build and Deploy to Firebase Hosting
     environment:
       groups:
         - firebase-auth
@@ -14,6 +14,9 @@ workflows:
       - name: Build the web app
         script: |
           npm run build
+      - name: Verify build output
+        script: |
+          ls -lh build
       - name: Decode Firebase Credentials
         script: |
           echo $FIREBASE_AUTH_CREDENTIALS | base64 --decode > $CM_BUILD_DIR/service-account.json
@@ -22,6 +25,7 @@ workflows:
           firebase deploy --only hosting --project $FIREBASE_PROJECT_ID --token $FIREBASE_AUTH_TOKEN
     artifacts:
       - build/**/*
+
 
 
 
