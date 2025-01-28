@@ -3,7 +3,7 @@ workflows:
     name: Build and Deploy Web App to Firebase Hosting
     environment:
       groups:
-        - firebase-auth  # 确保这个组中包含 FIREBASE_AUTH_CREDENTIALS
+        - firebase-auth  
       vars:
         GOOGLE_APPLICATION_CREDENTIALS: $CM_BUILD_DIR/service-account.json
         FIREBASE_PROJECT_ID: "project-6349879156933445469"
